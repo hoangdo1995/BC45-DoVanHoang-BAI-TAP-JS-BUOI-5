@@ -1,8 +1,58 @@
 // GLOBAL FUNCTION
+
+//các định dạng tiền tệ
 const VND = new Intl.NumberFormat('vi-VN', {
     style: 'currency',
     currency: 'VND',
-  });
+});
+
+const USDollar = new Intl.NumberFormat('en-US', {
+    style: 'currency',
+    currency: 'USD',
+});
+
+/**
+ * Trả về giá trị của input có name là 'name'
+ * @param {*} name name của input cần lấy giá trị
+ * @returns  giá trị của input có name = name
+ */
+function getValueByName(name) {
+    var listTags = document.getElementsByName(name);
+    console.log(listTags);
+    for (var i = 0; i < listTags.length; i++) {
+        if (listTags[i].checked === true) {
+            return listTags[i].value;
+        }
+    }
+}
+
+/**
+ * so sánh và lấy giá trị nhận về với value là con của mảng data1 để nhận lại giá trị có index tương tự của mảng data2
+ * @param {*} value khóa cần tìm
+ * @param {*} data1 mảng khóa
+ * @param {*} data2 mảng giá trị tương ứng
+ * @returns giá trị tương ứng với khóa value ở mảng data2
+ */
+function mappingValue(value, data1, data2) {
+    for (let i = 0; i < data1.length; i++) {
+        if (value === data1[i]) {
+            return data2[i];
+        }
+    }
+}
+
+/**
+ * add sự kiện listener cho thẻ các thẻ radios qua name của thẻ
+ * @param {*} targetName name của thẻ radio muốn add xự kiện
+ * @param {*} listener xự kiện listener
+ * @param {*} behavior hàm xử lý xự kiện
+ */
+function addListenerRadioByName(targetName, listener, behavior) {
+    var listRadio = document.getElementsByName(targetName);
+    listRadio.forEach(item => {
+        item.addEventListener(listener, behavior);
+    });
+}
 
 //BÀI TẬP QUẢN LÝ TUYỂN SINH
 
@@ -21,53 +71,12 @@ var diemChuan = 0;
  * @param {*} mon id có cấu trúc 'diem-mon'
  * @returns giá trị của input có id = 'diem-mon'
  */
-function diemMon(mon){
-    var diem = +document.getElementById('diem-'+mon).value;
+function diemMon(mon) {
+    var diem = +document.getElementById('diem-' + mon).value;
     return diem;
 }
 
-/**
- * Trả về giá trị của input có name là 'name'
- * @param {*} name name của input cần lấy giá trị
- * @returns  giá trị của input có name = name
- */
-function getValueByName(name){
-    var listTags = document.getElementsByName(name);
-    console.log(listTags);
-    for(var i = 0; i < listTags.length; i++){
-        if(listTags[i].checked === true){
-            return listTags[i].value;
-        }
-    }
-}
 
-/**
- * so sánh và lấy giá trị nhận về với value là con của mảng data1 để nhận lại giá trị có index tương tự của mảng data2
- * @param {*} value khóa cần tìm
- * @param {*} data1 mảng khóa
- * @param {*} data2 mảng giá trị tương ứng
- * @returns giá trị tương ứng với khóa value ở mảng data2
- */
-function mappingValue(value,data1,data2){
-    for(let i = 0; i < data1.length; i++){
-        if(value===data1[i]){
-            return data2[i];
-        }
-    }
-}
-
-/**
- * add sự kiện listener cho thẻ các thẻ radios qua name của thẻ
- * @param {*} targetName name của thẻ radio muốn add xự kiện
- * @param {*} listener xự kiện listener
- * @param {*} behavior hàm xử lý xự kiện
- */
-function addListenerRadioByName(targetName, listener,behavior){
-    var listRadio = document.getElementsByName(targetName);
-    listRadio.forEach(item =>{
-        item.addEventListener(listener,behavior);
-    });
-}
 
 /**
  * Xét tuyển dựa trên tổng 3 diêm số diem1, diem2,diem3 cộng với diemKV và diemDT với điều kiện tổng điểm lớn hơn diemChuan và không có điểm môn nào bằng 0 thì đậu ngược lại thì rớt
@@ -79,17 +88,15 @@ function addListenerRadioByName(targetName, listener,behavior){
  * @param {*} diemChuan 
  * @returns  trả về true nếu đậu và false nếu rớt
  */
-function xetTuyen(diem1,diem2,diem3,diemKV,diemDT,diemChuan){
+function xetTuyen(diem1, diem2, diem3, diemKV, diemDT, diemChuan) {
     var result = false;
-    if(diem1<=0||diem2<=0||diem3<=0){
+    if (diem1 <= 0 || diem2 <= 0 || diem3 <= 0) {
         result = false;
         return result;
-    }
-    else if(tong = diem1+diem2+diem3+diemDT+diemKV >= diemChuan){
+    } else if (tong = diem1 + diem2 + diem3 + diemDT + diemKV >= diemChuan) {
         result = true;
         return result;
-    }
-    else{
+    } else {
         result = false;
         return result;
     }
@@ -99,16 +106,16 @@ function xetTuyen(diem1,diem2,diem3,diemKV,diemDT,diemChuan){
 /**
  * In tổng điểm ra màn hình
  */
-function inDiemTong(){
+function inDiemTong() {
     laytongDiem();
-    document.getElementById('tong-diem').innerHTML =  tongDiem;
+    document.getElementById('tong-diem').innerHTML = tongDiem;
 }
 
 /**
  * tính tổng điểm ba môn cộng với diemKV và diemDT
  * @returns tongDiem
  */
-function laytongDiem(){
+function laytongDiem() {
     tongDiem = 0;
     diemToan = diemMon('toan');
     diemVan = diemMon('van');
@@ -121,17 +128,17 @@ function laytongDiem(){
 /**
  * add xự kiện cho các radio button khu-vuc
  */
-addListenerRadioByName('khu-vuc','change',function(){
-    diemKhuVuc = mappingValue(getValueByName('khu-vuc'),['khu-vuc-1','khu-vuc-2','khu-vuc-3'],[2,1,0.5]);
-    console.log('Điểm khu vực: '+ diemKhuVuc);
+addListenerRadioByName('khu-vuc', 'change', function () {
+    diemKhuVuc = mappingValue(getValueByName('khu-vuc'), ['khu-vuc-1', 'khu-vuc-2', 'khu-vuc-3'], [2, 1, 0.5]);
+    console.log('Điểm khu vực: ' + diemKhuVuc);
 })
 
 /**
  * add xự kiện cho các radio button doi-tuong
  */
-addListenerRadioByName('doi-tuong','change',function(){
-    diemDoiTuong = mappingValue(getValueByName('doi-tuong'),['doi-tuong-1','doi-tuong-2','doi-tuong-3'],[2.5,1.5,1]);
-    console.log('Điểm dối tương: ' +diemDoiTuong);
+addListenerRadioByName('doi-tuong', 'change', function () {
+    diemDoiTuong = mappingValue(getValueByName('doi-tuong'), ['doi-tuong-1', 'doi-tuong-2', 'doi-tuong-3'], [2.5, 1.5, 1]);
+    console.log('Điểm dối tương: ' + diemDoiTuong);
 
 
 })
@@ -140,29 +147,28 @@ addListenerRadioByName('doi-tuong','change',function(){
  * add listener cho các input diem
  */
 listNhapDuLieu.forEach((item) => {
-    item.addEventListener('change',inDiemTong);
+    item.addEventListener('change', inDiemTong);
 });
 /**
  * add xự kiện nhập điểm chuẩn
  */
-document.getElementById('diem-chuan').addEventListener('change',function(){
+document.getElementById('diem-chuan').addEventListener('change', function () {
     diemChuan = +this.value;
 })
 
 /**
  * hàm xử lí in kết quả ra màn hình
  */
-function xemKetQua(){
+function xemKetQua() {
     var inKetQua = document.getElementById('ket-qua');
-    var ketQua = xetTuyen(diemToan,diemVan,diemHoa,diemKhuVuc,diemDoiTuong,diemChuan);
-    if(ketQua){
+    var ketQua = xetTuyen(diemToan, diemVan, diemHoa, diemKhuVuc, diemDoiTuong, diemChuan);
+    if (ketQua) {
         inKetQua.classList.add('alert-success');
         inKetQua.classList.remove('alert-danger');
 
         inKetQua.innerHTML = 'Bạn đã đậu';
-        
-    }
-    else{
+
+    } else {
         inKetQua.classList.add('alert-danger');
         inKetQua.classList.remove('alert-success');
         inKetQua.innerHTML = 'Bạn đã rớt';
@@ -171,7 +177,7 @@ function xemKetQua(){
 /**
  * add xự kiên cho nút xem kết quả
  */
-document.getElementById('xem-ket-qua').addEventListener('click',xemKetQua);
+document.getElementById('xem-ket-qua').addEventListener('click', xemKetQua);
 
 //TÍNH TIỀN ĐIỆN
 
@@ -184,7 +190,7 @@ var tienDien = 0;
 /**
  * add xự kiện nhập tên khách hàng
  */
-document.getElementById('ho-ten').addEventListener('change',function(){
+document.getElementById('ho-ten').addEventListener('change', function () {
     hoTen1 = this.value;
     document.getElementById('ho-ten-output').innerHTML = hoTen1;
 })
@@ -192,7 +198,7 @@ document.getElementById('ho-ten').addEventListener('change',function(){
 /**
  * add xự kiện nhập vào số điện tiêu thụ
  */
-document.getElementById('so-dien').addEventListener('change',function(){
+document.getElementById('so-dien').addEventListener('change', function () {
     soDienTieuThu = +this.value;
     document.getElementById('so-dien-output').innerHTML = soDienTieuThu;
 })
@@ -202,34 +208,30 @@ document.getElementById('so-dien').addEventListener('change',function(){
  * @param {*} soDien số điện tiêu thụ
  * @returns tra về số tiền điện phải tra theo công thức tính bậc giá điện 
  */
-function tinhTienDien(soDien){
+function tinhTienDien(soDien) {
     // processing
     var soTien = 0;
-    if(soDien >= 0 && soDien <= 50){
-        soTien = soDien*500;
-    }
-    else if(soDien > 50 && soDien <= 100){
-        soTien = 500*50 + (soDien-50)*650;
-    }
-    else if(soDien > 100 && soDien <= 200){
-        soTien = 500*50 + 50*650 +  (soDien-100)*850;
-    }
-    else if(soDien > 200 && soDien < 350){
-        soTien = 500*50 + 50*650 + 100*850 + (soDien-200)*1100;
-    }
-    else if(soDien >= 350){
-        soTien = 500*50 + 50*650 + 100*850 + + 150*1100 + (soDien-350)*1300;
+    if (soDien >= 0 && soDien <= 50) {
+        soTien = soDien * 500;
+    } else if (soDien > 50 && soDien <= 100) {
+        soTien = 500 * 50 + (soDien - 50) * 650;
+    } else if (soDien > 100 && soDien <= 200) {
+        soTien = 500 * 50 + 50 * 650 + (soDien - 100) * 850;
+    } else if (soDien > 200 && soDien < 350) {
+        soTien = 500 * 50 + 50 * 650 + 100 * 850 + (soDien - 200) * 1100;
+    } else if (soDien >= 350) {
+        soTien = 500 * 50 + 50 * 650 + 100 * 850 + +150 * 1100 + (soDien - 350) * 1300;
     }
     return soTien;
-    
+
 }
 
 /**
  * add xự kiện tính và in kết quả tiền điện ra màn hình
  */
-document.getElementById('tinh-tien-dien').onclick = function(){
+document.getElementById('tinh-tien-dien').onclick = function () {
     tienDien = tinhTienDien(soDienTieuThu);
-    document.getElementById('ket-qua-tien-dien').innerHTML = `Số tiền điện bạn phải trả là `+VND.format(tienDien);
+    document.getElementById('ket-qua-tien-dien').innerHTML = `Số tiền điện bạn phải trả là ` + VND.format(tienDien);
 }
 
 
@@ -243,24 +245,24 @@ var tienThue = 0;
 
 
 // nhập vào các giá trị dựa trên id và in ra output
-document.getElementById('ho-ten-nop-thue').addEventListener('change',function(){
+document.getElementById('ho-ten-nop-thue').addEventListener('change', function () {
     hoTen2 = this.value;
     document.getElementById('ho-ten-nop-the-output').innerHTML = hoTen2;
 });
 
-document.getElementById('tong-thu-nhap').addEventListener('change',function(){
+document.getElementById('tong-thu-nhap').addEventListener('change', function () {
     thuNhap = this.value;
     document.getElementById('thu-nhap-output').innerHTML = VND.format(thuNhap);
 });
 
-document.getElementById('nguoi-phu-thuoc').addEventListener('change',function(){
+document.getElementById('nguoi-phu-thuoc').addEventListener('change', function () {
     phuThuoc = this.value;
     document.getElementById('phu-thuoc-output').innerHTML = phuThuoc;
 });
 
 
-var mucThue = [0.05,0.1,0.15,0.2,0.25,0.3,0.35];
-var buocThue = [60000000,120000000,210000000,384000000,624000000,960000000];
+var mucThue = [0.05, 0.1, 0.15, 0.2, 0.25, 0.3, 0.35];
+var buocThue = [60000000, 120000000, 210000000, 384000000, 624000000, 960000000];
 
 /**
  * lấy giá khoảng thu nhập chịu thuế
@@ -268,8 +270,8 @@ var buocThue = [60000000,120000000,210000000,384000000,624000000,960000000];
  * @param {*} soNguoiPhuThuoc 
  * @returns 
  */
-function layThuNhapChiuThue(thunhap,soNguoiPhuThuoc){
-    return thunhap - 4000000 - soNguoiPhuThuoc*1600000;
+function layThuNhapChiuThue(thunhap, soNguoiPhuThuoc) {
+    return thunhap - 4000000 - soNguoiPhuThuoc * 1600000;
 }
 
 
@@ -280,39 +282,32 @@ function layThuNhapChiuThue(thunhap,soNguoiPhuThuoc){
  * @param {*} buocThue là mảng các bước tiền thuế
  * @returns 
  */
-function tinhTienThue(thuNhapThue, mucThue, buocThue ){
-    
-    if(thuNhapThue <= 0){
+function tinhTienThue(thuNhapThue, mucThue, buocThue) {
+
+    if (thuNhapThue <= 0) {
         return 0;
-    }
-    else if(thuNhapThue <= buocThue[0]){
-        return thuNhapThue*mucThue[0];
-    }
-    else if(thuNhapThue > buocThue[0] && thuNhapThue <= buocThue[1]){
-        return buocThue[0]*mucThue[0] + (thuNhapThue - buocThue[0])*mucThue[1];
-    }
-    else if(thuNhapThue > buocThue[1] && thuNhapThue <= buocThue[2]){
-        return buocThue[0]*mucThue[0] + (buocThue[1]-buocThue[0])*mucThue[1] + (thuNhapThue - buocThue[1])*mucThue[2];
-    }
-    else if(thuNhapThue > buocThue[2] && thuNhapThue <= buocThue[3]){
-        return buocThue[0]*mucThue[0] + (buocThue[1]-buocThue[0])*mucThue[1] + (buocThue[2]-buocThue[1])*mucThue[2] + (thuNhapThue - buocThue[2])*mucThue[3];
-    }
-    else if(thuNhapThue > buocThue[3] && thuNhapThue <= buocThue[4]){
-        return buocThue[0]*mucThue[0] + (buocThue[1]-buocThue[0])*mucThue[1] + (buocThue[2]-buocThue[1])*mucThue[2] + (buocThue[3]-buocThue[2])*mucThue[3] + (thuNhapThue - buocThue[3])*mucThue[4];
-    }
-    else if(thuNhapThue > buocThue[4] && thuNhapThue <= buocThue[5]){
-        return buocThue[0]*mucThue[0] + (buocThue[1]-buocThue[0])*mucThue[1] + (buocThue[2]-buocThue[1])*mucThue[2] + (buocThue[3]-buocThue[2])*mucThue[3] + (buocThue[4]-buocThue[3])*mucThue[4] + (thuNhapThue - buocThue[4])*mucThue[5];
-    }
-    else if(thuNhapThue >= buocThue[5]){
-        return buocThue[0]*mucThue[0] + (buocThue[1]-buocThue[0])*mucThue[1] + (buocThue[2]-buocThue[1])*mucThue[2] + (buocThue[3]-buocThue[2])*mucThue[3] + (buocThue[4]-buocThue[3])*mucThue[4] + (buocThue[5]-buocThue[4])*mucThue[5] + (thuNhapThue - buocThue[5])*mucThue[6];
+    } else if (thuNhapThue <= buocThue[0]) {
+        return thuNhapThue * mucThue[0];
+    } else if (thuNhapThue > buocThue[0] && thuNhapThue <= buocThue[1]) {
+        return buocThue[0] * mucThue[0] + (thuNhapThue - buocThue[0]) * mucThue[1];
+    } else if (thuNhapThue > buocThue[1] && thuNhapThue <= buocThue[2]) {
+        return buocThue[0] * mucThue[0] + (buocThue[1] - buocThue[0]) * mucThue[1] + (thuNhapThue - buocThue[1]) * mucThue[2];
+    } else if (thuNhapThue > buocThue[2] && thuNhapThue <= buocThue[3]) {
+        return buocThue[0] * mucThue[0] + (buocThue[1] - buocThue[0]) * mucThue[1] + (buocThue[2] - buocThue[1]) * mucThue[2] + (thuNhapThue - buocThue[2]) * mucThue[3];
+    } else if (thuNhapThue > buocThue[3] && thuNhapThue <= buocThue[4]) {
+        return buocThue[0] * mucThue[0] + (buocThue[1] - buocThue[0]) * mucThue[1] + (buocThue[2] - buocThue[1]) * mucThue[2] + (buocThue[3] - buocThue[2]) * mucThue[3] + (thuNhapThue - buocThue[3]) * mucThue[4];
+    } else if (thuNhapThue > buocThue[4] && thuNhapThue <= buocThue[5]) {
+        return buocThue[0] * mucThue[0] + (buocThue[1] - buocThue[0]) * mucThue[1] + (buocThue[2] - buocThue[1]) * mucThue[2] + (buocThue[3] - buocThue[2]) * mucThue[3] + (buocThue[4] - buocThue[3]) * mucThue[4] + (thuNhapThue - buocThue[4]) * mucThue[5];
+    } else if (thuNhapThue >= buocThue[5]) {
+        return buocThue[0] * mucThue[0] + (buocThue[1] - buocThue[0]) * mucThue[1] + (buocThue[2] - buocThue[1]) * mucThue[2] + (buocThue[3] - buocThue[2]) * mucThue[3] + (buocThue[4] - buocThue[3]) * mucThue[4] + (buocThue[5] - buocThue[4]) * mucThue[5] + (thuNhapThue - buocThue[5]) * mucThue[6];
     }
 }
 
 /**
  * Tính và hiển thị kết qua ra màn hình qu xự kiện click của button id ='tinh-thue'
  */
-document.getElementById('tinh-thue').onclick = function(){
-    tienThue = tinhTienThue(layThuNhapChiuThue(thuNhap,phuThuoc),mucThue,buocThue);
+document.getElementById('tinh-thue').onclick = function () {
+    tienThue = tinhTienThue(layThuNhapChiuThue(thuNhap, phuThuoc), mucThue, buocThue);
     document.getElementById('thue-output').innerHTML = VND.format(tienThue);
 }
 
@@ -320,44 +315,67 @@ document.getElementById('tinh-thue').onclick = function(){
 
 // input
 var maKH = '';
-var loaiKH = '';
+var loaiKH = 'ca-nhan';
 var soKenhCC = 0;
 var soKN = 0;
 // output
 var tienCuoc = 0;
+var phiXuLy = 0;
+var phiDichVu = 0;
+var phiThueKenh = 0;
 
-document.getElementById('ma-khach-hang').addEventListener('change',function(){
+document.getElementById('ma-khach-hang').addEventListener('change', function () {
     hoTen2 = this.value;
     document.getElementById('ma-khach-hang-output').innerHTML = hoTen2;
 });
-document.getElementById('so-ket-noi').addEventListener('change',function(){
-    hoTen2 = this.value;
-    document.getElementById('so-ket-noi-output').innerHTML = hoTen2;
+document.getElementById('so-ket-noi').addEventListener('change', function () {
+    soKN = this.value;
+    document.getElementById('so-ket-noi-output').innerHTML = soKN;
 });
-document.getElementById('so-kenh-cao-cap').addEventListener('change',function(){
-    hoTen2 = this.value;
-    document.getElementById('so-kenh-cao-cap-output').innerHTML = hoTen2;
+document.getElementById('so-kenh-cao-cap').addEventListener('change', function () {
+    soKenhCC = this.value;
+    document.getElementById('so-kenh-cao-cap-output').innerHTML = soKenhCC;
 });
 
 
-addListenerRadioByName('loai-khach-hang','change',function(){
+addListenerRadioByName('loai-khach-hang', 'change', function () {
     loaiKH = getValueByName('loai-khach-hang');
-    if(loaiKH === 'doanh-nghiep'){
+    if (loaiKH === 'doanh-nghiep') {
         document.getElementById('ket-noi-content').style.display = 'block';
         document.getElementById('so-ket-noi').disabled = false;
-    }
-    else{
+        document.getElementById('loai-khach-hang-output').innerHTML = 'Doanh nghiệp';
+    } else {
         document.getElementById('so-ket-noi').disabled = true;
         document.getElementById('ket-noi-content').style.display = 'none';
+        document.getElementById('loai-khach-hang-output').innerHTML = 'Cá nhân';
+
     }
     document.getElementById('so-ket-noi-output').innerHTML = soKN;
 })
 
+function getTongPhi() {
+    return phiXuLy + phiDichVu + phiThueKenh;
+}
 
+function displayTienCuoc() {
+    document.getElementById('phi-xu-ly').innerHTML = phiXuLy;
+    document.getElementById('phi-dich-vu').innerHTML = phiDichVu;
+    document.getElementById('phi-kenh-cao-cap').innerHTML = phiThueKenh;
+    document.getElementById('tong-phi').innerHTML = tienCuoc;
 
-
-
-
-
-    
-
+}
+document.getElementById('xu-ly-hoa-don').onclick = function () {
+    if (loaiKH == 'ca-nhan') {
+        phiXuLy = 4.5;
+        phiDichVu = 20.5;
+        phiThueKenh = 7.5 * soKenhCC;
+        tienCuoc = getTongPhi();
+    } else if (loaiKH == 'doanh-nghiep') {
+        phiXuLy = 15;
+        phiDichVu = 75;
+        phiThueKenh = 50 * soKenhCC;
+        phiDichVu += (soKN>10)?(soKN-10)*5:0;
+        tienCuoc = getTongPhi();
+    }
+    displayTienCuoc();
+}
