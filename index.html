@@ -1,143 +1,174 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Bài tập JS buổi 5</title>
-     <!-- BOOSTRAP CSS -->
-     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet"
-     integrity="sha384-GLhlTQ8iRABdZLl6O3oVMWSktQOp6b7In1Zl3/Jr59b6EGGoI1aFkw7cmDA6j6gD" crossorigin="anonymous">
+    <!-- BOOSTRAP CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet"
+        integrity="sha384-GLhlTQ8iRABdZLl6O3oVMWSktQOp6b7In1Zl3/Jr59b6EGGoI1aFkw7cmDA6j6gD" crossorigin="anonymous">
 </head>
+
 <body>
-    <div class="container">
-        <h3 class="text-center my-4">QUẢN LÝ TUYỂN SINH</h3>
-        <div class="row fs-6">
-            <div class="thong-tin-tuyen-sinh form-group col-3 d-flex flex-column justify-content-center">
-                <div>
-                    <span class=" d-inline">Điểm chuẩn:</span>
-                    <input type="number" class="form-control w-50 d-inline" id="diem-chuan">
-                    <button id="xem-ket-qua" class="btn btn-success mx-auto d-block my-3">Xem kết quả</button>
-                    <div class="ket-qua alert alert-danger fs-5 text-center" id="ket-qua">
-
-                    </div>
-                </div>  
+    <div class="container-lg py-5 px-4 border  bg-secondary-subtle rounded-4 mt-4">
+        <div class="d-flex align-items-start">
+            <div class="nav flex-column nav-pills me-3 w-25 bg-primary-subtle p-3 rounded-4 shadow" id="v-pills-tab" role="tablist" aria-orientation="vertical">
+                <button class="nav-link active my-1" id="bai-1-tab" data-bs-toggle="pill" data-bs-target="#bai-1"
+                    type="button" role="tab" aria-controls="bai-1" aria-selected="true">Bài 1</button>
+                <button class="nav-link my-1" id="bai-2-tab" data-bs-toggle="pill" data-bs-target="#bai-2" type="button"
+                    role="tab" aria-controls="bai-2" aria-selected="false">Bài 2</button>
+                <button class="nav-link my-1" id="bai-3-tab" data-bs-toggle="pill" data-bs-target="#bai-3" type="button"
+                    role="tab" aria-controls="bai-3" aria-selected="false">Bài 3</button>
+                <button class="nav-link my-1" id="bai-4-tab" data-bs-toggle="pill" data-bs-target="#bai-4" type="button"
+                    role="tab" aria-controls="bai-4" aria-selected="false">Bài 4</button>
             </div>
-            <div class="col-9 border border-success rounded-3 p-4">
-                <h2 class="text-center m-4 text-uppercase">Thông tin thí sinh</h2>
-                <div class="form-group row" >
-                    <div class="col-6">
-                        <h5 class="mb-4">Điểm thi</h5>
-                    <label for="diem-toan" class="w-50 m-2">Điểm Toán</label>
-                    <input type="number" id="diem-toan" class="nhap form-control d-inline-block w-50" max="10" min="0">
-                    <label for="diem-hoa" class="w-50 m-2">Điểm Hóa</label>
-                    <input type="number" id="diem-hoa" class="nhap form-control d-inline-block w-50" max="10" min="0">
-                    <label for="diem-van" class="w-50 m-2">Điểm Văn</label>
-                    <input type="number" id="diem-van" class="nhap form-control d-inline-block w-50" max="10" min="0">
-                    </div>
-                    <div class="col-6">
-                        <h5 class="mb-4">Thông tin khu vực và đối tượng</h5>
-                        <h5>Khu vực:</h5>
-                            <input type="radio" value="khu-vuc-1" name="khu-vuc" class="nhap" id="khu-vuc-1">
-                            <label for="khu-vuc-1" class="me-3">Khu vực 1 </label>
-                            <input type="radio" value="khu-vuc-2" name="khu-vuc" id="khu-vuc-2" class="nhap" >
-                            <label for="khu-vuc-2" class="me-3">Khu vực 2 </label>
-                            <input type="radio" value="khu-vuc-3" name="khu-vuc" id="khu-vuc-3" class="nhap">
-                            <label for="khu-vuc-3">Khu vực 3 </label>
-                        <h5 class="mt-3">Đối tượng:</h5>
-                            <input type="radio" value="doi-tuong-1" name="doi-tuong" id="doi-tuong-1" class="nhap">
-                            <label for="doi-tuong-1" class="me-3">Đối tượng 1 </label>
-                            <input type="radio" value="doi-tuong-2" name="doi-tuong" id="doi-tuong-2" class="nhap">
-                            <label for="doi-tuong-2" class="me-3">Đối tượng 2 </label>
-                            <input type="radio" value="doi-tuong-3" name="doi-tuong" id="doi-tuong-3" class="nhap">
-                            <label for="doi-tuong-3">Đối tượng 3 </label>
+            <div class="tab-content w-75 rounded-4 p-4 bg-danger-subtle" id="v-pills-tabContent">
+                <div class="tab-pane fade show active" id="bai-1" role="tabpanel" aria-labelledby="bai-1-tab"
+                    tabindex="0">
+                    <h3 class="text-center bg-primary-subtle mb-4 rounded-3 p-2">QUẢN LÝ TUYỂN SINH</h3>
+                    <div class="row fs-6">
+                        <div class="form-group col-3 d-flex flex-column justify-content-center">
+                            <div>
+                                <span class="d-block mb-3 text-center">Điểm chuẩn:</span>
+                                <input type="number" class="form-control mx-auto w-50 " id="diem-chuan">
+                                <button id="xem-ket-qua" class="btn btn-success mx-auto d-block my-3">Xem kết
+                                    quả</button>
+                                <div class="ket-qua alert alert-danger fs-5 text-center" id="ket-qua">
 
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-9 border border-success rounded-3">
+                            <h2 class="text-center m-4 text-uppercase">Thông tin thí sinh</h2>
+                            <div class="form-group row">
+                                <div class="col-4">
+                                    <h5 class="mb-4">Điểm thi</h5>
+                                    <label for="diem-toan" class="w-50 m-2">Điểm Toán</label>
+                                    <input type="number" id="diem-toan" class="nhap form-control d-inline-block w-50"
+                                        max="10" min="0">
+                                    <label for="diem-hoa" class="w-50 m-2">Điểm Hóa</label>
+                                    <input type="number" id="diem-hoa" class="nhap form-control d-inline-block w-50"
+                                        max="10" min="0">
+                                    <label for="diem-van" class="w-50 m-2">Điểm Văn</label>
+                                    <input type="number" id="diem-van" class="nhap form-control d-inline-block w-50"
+                                        max="10" min="0">
+                                </div>
+                                <div class="col-8">
+                                    <h5 class="mb-4">Thông tin khu vực và đối tượng</h5>
+                                    <h5>Khu vực:</h5>
+                                    <input type="radio" value="khu-vuc-1" name="khu-vuc" class="nhap" id="khu-vuc-1">
+                                    <label for="khu-vuc-1" class="me-3">Khu vực 1 </label>
+                                    <input type="radio" value="khu-vuc-2" name="khu-vuc" id="khu-vuc-2" class="nhap">
+                                    <label for="khu-vuc-2" class="me-3">Khu vực 2 </label>
+                                    <input type="radio" value="khu-vuc-3" name="khu-vuc" id="khu-vuc-3" class="nhap">
+                                    <label for="khu-vuc-3">Khu vực 3 </label>
+                                    <h5 class="mt-3">Đối tượng:</h5>
+                                    <input type="radio" value="doi-tuong-1" name="doi-tuong" id="doi-tuong-1"
+                                        class="nhap">
+                                    <label for="doi-tuong-1" class="me-3">Đối tượng 1 </label>
+                                    <input type="radio" value="doi-tuong-2" name="doi-tuong" id="doi-tuong-2"
+                                        class="nhap">
+                                    <label for="doi-tuong-2" class="me-3">Đối tượng 2 </label>
+                                    <input type="radio" value="doi-tuong-3" name="doi-tuong" id="doi-tuong-3"
+                                        class="nhap">
+                                    <label for="doi-tuong-3">Đối tượng 3 </label>
+
+                                </div>
+                                <div class="alert alert-success w-50  mx-auto mt-4 text-center">
+                                    <span>Tổng điểm của bạn là:</span>
+                                    <span id="tong-diem"></span>
+                                </div>
+                            </div>
+                        </div>
                     </div>
-                    <div class="alert alert-success w-50  mx-auto mt-4 text-center" >
-                        <span>Tổng điểm của bạn là:</span>
-                        <span id="tong-diem"></span>
+                </div>
+                <div class="tab-pane fade" id="bai-2" role="tabpanel" aria-labelledby="bai-2-tab" tabindex="0">
+                    <div class="container">
+                    <div class="row fs-5 w-100">
+                        <h3 class="text-center bg-primary-subtle mb-4 rounded-3 p-2">TÍNH TIỀN ĐIỆN</h3>
+                        <div class="col-6">
+                            <h4 class="text-center my-3">Thông tin khách hàng</h4>
+                            <label for="ho-ten" class="">Họ và tên:</label>
+                            <input type="text" id="ho-ten" class="form-control my-3" /><br>
+                            <label for="so-dien" class="d-block">Điện tiêu thụ:</label>
+                            <input type="number" id="so-dien"
+                                class="form-control w-50 d-inline me-3 my-3" /><span>KwH</span><br>
+                            <button id="tinh-tien-dien" class="btn btn-success">Tính tiền điện</button>
+                        </div>
+                        <div class="col-6 border alert alert-success">
+                            <h3 class="text-center">Thông tin tiền điện</h3>
+                            <span>Khách hàng:</span>
+                            <span class="fw-bolder" id="ho-ten-output"></span><br>
+                            <span>Số điện tiêu thụ:</span>
+                            <span id="so-dien-output"></span><span class="ms-2">KwH</span><br>
+                            <span id="ket-qua-tien-dien"></span>
+                        </div>
                     </div>
+                    </div>
+                </div>
+                <div class="tab-pane fade" id="bai-3" role="tabpanel" aria-labelledby="bai-3-tab" tabindex="0">
+                    <div class="row fs-5">
+                        <h3 class="text-center bg-primary-subtle mb-4 rounded-3 p-2">TÍNH THUẾ THU NHẬP CÁ NHÂN</h3>
+                            <div class="col-6">
+                                <h4>Thông tin người nộp thuế</h4>
+                                <label for="ho-ten-nop-thue">Họ và tên:</label>
+                                <input type="text" class="form-control my-3" id="ho-ten-nop-thue">
+                                <label for="tong-thu-nhap">Tổng thu nhập:</label><br>
+                                <input type="number" class="form-control my-3 w-75 d-inline me-3"
+                                    id="tong-thu-nhap"><span>VNĐ/NĂM</span>
+                                <label for="nguoi-phu-thuoc">Số người phụ thuộc:</label>
+                                <input type="number" class="form-control my-3 w-25" id="nguoi-phu-thuoc">
+                                <button id="tinh-thue" class="btn btn-success">Tính tiền thuế</button>
+                            </div>
+                            <div class="col-6 alert alert-success">
+                                <h3 class="text-center">Thông tin nộp thuế</h3>
+                                <p>Họ và tên: <span id="ho-ten-nop-the-output" class="fw-bolder"></span></p>
+                                <p>Tổng thu nhập hằng năm: <span id="thu-nhap-output"></span>/NĂM</p>
+                                <p>Số người phụ thuộc: <span id="phu-thuoc-output"></span> Người</p>
+                                <p>Tiền thuế phải đóng là: <span id="thue-output"></span>/NĂM</p>
+                            </div>
+                        </div>
+                </div>
+                <div class="tab-pane fade" id="bai-4" role="tabpanel" aria-labelledby="bai-4-tab" tabindex="0">
+                    <div class="row fs-4">
+                        <h3 class="text-center bg-primary-subtle mb-4 rounded-3 p-2">TÍNH TIỀN CÁP</h3>
+                            <div class="col-6 p-2">
+                                <h4 class="mb-3">Thông tin đăng ký</h4>
+                                <label for="ma-khach-hang">Mã khách hàng:</label>
+                                <input type="text" class="form-control my-3 w-50" id="ma-khach-hang" placeholder="VA-1234">
+                                <label for="" class="my-2">Loại khách hàng:</label><br>
+                                <input type="radio" value="ca-nhan" name="loai-khach-hang" class="ms-3 me-2" checked='true'><span>Cá
+                                    nhân</span>
+                                <input type="radio" value="doanh-nghiep" name="loai-khach-hang" class="ms-3 me-2"><span>Doanh
+                                    nghiệp</span>
+                                <br>
+                                <label for="so-kenh-cao-cap" class="my-2">Số kênh cao cấp:</label>
+                                <input type="number" class="form-control w-25" id="so-kenh-cao-cap">
+                                <label for="so-ket-noi" class="my-3">Số kết nối:</label>
+                                <input type="number" class="form-control" id="so-ket-noi"
+                                    placeholder="Chỉ dành cho khách hàng doanh nghiệp" disabled="'true">
+                                <button class="btn btn-success mt-4" id="xu-ly-hoa-don">Tính hóa đơn</button>
+                            </div>
+                            <div class="col-6 border rounded-3  alert alert-success">
+                                <h3 class="text-center my-3">Thông tin tiền cáp</h3>
+                                <div>Mã khách hàng: <span id="ma-khach-hang-output" class="fw-bolder text-uppercase"></span></div>
+                                <div>Loại khách hàng: <span id="loai-khach-hang-output"></span></div>
+                                <div>Số kênh cao cấp: <span id="so-kenh-cao-cap-output"></span></div>
+                                <div class="" id="ket-noi-content">Số kết nối: <span id="so-ket-noi-output"></span></div>
+                                <hr>
+                                <h3 class="text-center">Hóa đơn</h3>
+                                <p>Phí xử lý hóa đơn: <span id="phi-xu-ly"></span> $</p>
+                                <p>Phí dịch vụ cơ bản: <span id="phi-dich-vu"></span> $</p>
+                                <p>Phí thuê kênh cao cấp: <span id="phi-kenh-cao-cap"></span> $</p>
+                                <p>Tổng phí: <span id="tong-phi"></span></p>
+                            </div>
+                        </div>
                 </div>
             </div>
         </div>
-        <hr>
-        <h3 class="text-center my-3">TÍNH TIỀN ĐIỆN</h3>
-        <div class="row my-5 border rounded fs-5 p-3">
-            
-            <div class="col-6">
-                <h4 class="text-center my-3">Thông tin khách hàng</h4>
-                <label for="ho-ten" class="">Họ và tên:</label>
-                <input type="text" id="ho-ten" class="form-control my-3"/><br>
-                <label for="so-dien" class="d-block">Điện tiêu thụ:</label>
-                <input type="number" id="so-dien" class="form-control w-50 d-inline me-3 my-3"/><span>KwH</span><br>
-                <button id="tinh-tien-dien" class="btn btn-success">Tính tiền điện</button>
-            </div>
-            <div class="col-6 border alert alert-success">
-                <h3 class="text-center">Thông tin tiền điện</h3>
-                <span>Khách hàng:</span>
-                <span class="fw-bolder" id="ho-ten-output"></span><br>
-                <span>Số điện tiêu thụ:</span>
-                <span id="so-dien-output"></span><span class="ms-2">KwH</span><br>
-                <span id="ket-qua-tien-dien"></span>
-            </div>
-        </div>
-        <hr>
-        <h3 class="my-5 text-center">TÍNH THUẾ THU NHẬP CÁ NHÂN</h3>
-        <div class="row border p-5 fs-5">
-            <div class="col-6">
-                <h4>Thông tin người nộp thuế</h4>
-                <label for="ho-ten-nop-thue">Họ và tên:</label>
-                <input type="text" class="form-control my-3" id="ho-ten-nop-thue">
-                <label for="tong-thu-nhap">Tổng thu nhập:</label><br>
-                <input type="number" class="form-control my-3 w-75 d-inline me-3" id="tong-thu-nhap"
-                ><span>VNĐ/NĂM</span>
-                <label for="nguoi-phu-thuoc">Số người phụ thuộc:</label>
-                <input type="number" class="form-control my-3 w-25" id="nguoi-phu-thuoc">
-                <button id="tinh-thue" class="btn btn-success">Tính tiền thuế</button>
-            </div>
-            <div class="col-6 alert alert-success">
-                <h3 class="text-center">Thông tin nộp thuế</h3>
-                <p>Họ và tên: <span id="ho-ten-nop-the-output" class="fw-bolder"></span></p>
-                <p>Tổng thu nhập hằng năm: <span id="thu-nhap-output"></span>/NĂM</p>
-                <p>Số người phụ thuộc: <span id="phu-thuoc-output"></span> Người</p>
-                <p>Tiền thuế phải đóng là: <span id="thue-output"></span>/NĂM</p>
-            </div>
-        </div>
-        <hr>
-        <h3 class="text-center m-5">TÍNH TIỀN CÁP</h3>
-        <div class="row  p-4 border rounded fs-4">
-            <div class="col-6 p-5">
-                <h4 class="mb-3">Thông tin đăng ký</h4>
-                <label for="ma-khach-hang">Mã khách hàng:</label>
-                <input type="text" class="form-control my-3 w-50" id="ma-khach-hang" placeholder="VA-1234">
-                <label for="" class="my-2">Loại khách hàng:</label><br>
-                <input type="radio" value="ca-nhan" name="loai-khach-hang" class="ms-3 me-2" checked = 'true'><span>Cá nhân</span>
-                <input type="radio" value="doanh-nghiep" name="loai-khach-hang" class="ms-3 me-2"><span>Doanh nghiệp</span>
-                <br>
-                <label for="so-kenh-cao-cap" class="my-2">Số kênh cao cấp:</label>
-                <input type="number" class="form-control w-25" id="so-kenh-cao-cap">
-                <label for="so-ket-noi" class="my-3">Số kết nối:</label>
-                <input type="number" class="form-control w-75" id="so-ket-noi" placeholder="Chỉ dành cho khách hàng doanh nghiệp" disabled="'true">
-                <button class="btn btn-success mt-4" id="xu-ly-hoa-don">Tính hóa đơn</button>
-            </div>
-            <div class="col-6 border rounded-3  alert alert-success">
-                <h3 class="text-center my-3">Thông tin tiền cáp</h3>
-                <div>Mã khách hàng: <span id="ma-khach-hang-output" class="fw-bolder text-uppercase"></span></div>
-                <div>Loại khách hàng: <span id="loai-khach-hang-output"></span></div>
-                <div>Số kênh cao cấp: <span id="so-kenh-cao-cap-output"></span></div>
-                <div class="" id="ket-noi-content">Số kết nối: <span id="so-ket-noi-output"></span></div>
-                <hr>
-                <h3 class="text-center">Hóa đơn</h3>
-                <p>Phí xử lý hóa đơn: <span id="phi-xu-ly"></span></p>
-                <p>Phí dịch vụ cơ bản: <span id="phi-dich-vu"></span></p>
-                <p>Phí thuê kênh cao cấp: <span id="phi-kenh-cao-cap"></span></p>
-                <p>Tổng phí: <span id="tong-phi"></span></p>
-            </div>
-        </div>
-
     </div>
-
-    
     <!-- BOOSTRAP JS -->
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js"
         integrity="sha384-w76AqPfDkMBDXo30jS1Sgez6pr3x5MlQ1ZAGC+nuZB+EYdgRZgiwxhTBTkF7CXvN" crossorigin="anonymous">
@@ -145,4 +176,5 @@
     <!-- MAIN JS -->
     <script src="./js/index.js"></script>
 </body>
+
 </html>
