@@ -54,6 +54,38 @@ function addListenerRadioByName(targetName, listener, behavior) {
     });
 }
 
+/**
+ * Hàm tính hóa đơn theo khung gia cho sẳn,
+ * @param {*} value giá trị tiêu thụ cần tính
+ * @param {*} mangTieuThu mảng các bậc tiêu thụ bắc đầu từ 0;
+ * @param {*} MangDonGia mảng các bậc đơn giá
+ * @returns tổng hóa đơn cần trả
+ */
+function tinhTienTheoKhungGia(value,mangTieuThu,MangDonGia){
+    var tongHoaDon = 0;
+    if(value === 0){
+        return tongHoaDon;
+    }
+    for(let i= 0; i <mangTieuThu.length; i++){
+        
+        if(value === mangTieuThu[i+1]){
+            tongHoaDon += (mangTieuThu[i+1]-mangTieuThu[i])*MangDonGia[i];
+            return tongHoaDon;
+        }
+        else if(value > mangTieuThu[i] && value > mangTieuThu[i+1]){
+            tongHoaDon += (mangTieuThu[i+1]-mangTieuThu[i])*MangDonGia[i];
+        }
+        else if(value > mangTieuThu[i] && value < mangTieuThu[i+1]){
+            tongHoaDon += (value - mangTieuThu[i])*MangDonGia[i];
+            return tongHoaDon;
+        }
+        else if(i===(mangTieuThu.length -1)){
+            tongHoaDon += (value - mangTieuThu[mangTieuThu.length-1])*MangDonGia[MangDonGia.length-1];
+            return tongHoaDon;
+        }
+    }
+}
+
 //BÀI TẬP QUẢN LÝ TUYỂN SINH
 
 var diemToan = 0;
@@ -203,34 +235,16 @@ document.getElementById('so-dien').addEventListener('change', function () {
     document.getElementById('so-dien-output').innerHTML = soDienTieuThu;
 })
 
-/**
- * Hàm tính số tiền điện phải trả dựa trên số điện tiêu thụ nhập vào {soDien}
- * @param {*} soDien số điện tiêu thụ
- * @returns tra về số tiền điện phải tra theo công thức tính bậc giá điện 
- */
-function tinhTienDien(soDien) {
-    // processing
-    var soTien = 0;
-    if (soDien >= 0 && soDien <= 50) {
-        soTien = soDien * 500;
-    } else if (soDien > 50 && soDien <= 100) {
-        soTien = 500 * 50 + (soDien - 50) * 650;
-    } else if (soDien > 100 && soDien <= 200) {
-        soTien = 500 * 50 + 50 * 650 + (soDien - 100) * 850;
-    } else if (soDien > 200 && soDien < 350) {
-        soTien = 500 * 50 + 50 * 650 + 100 * 850 + (soDien - 200) * 1100;
-    } else if (soDien >= 350) {
-        soTien = 500 * 50 + 50 * 650 + 100 * 850 + +150 * 1100 + (soDien - 350) * 1300;
-    }
-    return soTien;
-
-}
+//mảng chứa các bậc tiêu thụ điện
+const mangBacTieuThuDien = [0,50,100,200,350];
+//mảng chưa các bậc giá điện
+const mangBacGiaDien = [500,650,850,1100,1300];
 
 /**
  * add xự kiện tính và in kết quả tiền điện ra màn hình
  */
 document.getElementById('tinh-tien-dien').onclick = function () {
-    tienDien = tinhTienDien(soDienTieuThu);
+    tienDien = tinhTienTheoKhungGia(soDienTieuThu,mangBacTieuThuDien,mangBacGiaDien);
     document.getElementById('ket-qua-tien-dien').innerHTML = `Số tiền điện bạn phải trả là ` + VND.format(tienDien);
 }
 
@@ -260,10 +274,6 @@ document.getElementById('nguoi-phu-thuoc').addEventListener('change', function (
     document.getElementById('phu-thuoc-output').innerHTML = phuThuoc;
 });
 
-
-var mucThue = [0.05, 0.1, 0.15, 0.2, 0.25, 0.3, 0.35];
-var buocThue = [60000000, 120000000, 210000000, 384000000, 624000000, 960000000];
-
 /**
  * lấy giá khoảng thu nhập chịu thuế
  * @param {*} thunhap 
@@ -271,43 +281,21 @@ var buocThue = [60000000, 120000000, 210000000, 384000000, 624000000, 960000000]
  * @returns 
  */
 function layThuNhapChiuThue(thunhap, soNguoiPhuThuoc) {
-    return thunhap - 4000000 - soNguoiPhuThuoc * 1600000;
+    var result = thunhap - 4000000 - soNguoiPhuThuoc * 1600000
+    return (result>0)?result:0;
 }
 
-
-/**
- * Tính tiền thuế dựa trên công thức
- * @param {*} thuNhapThue 
- * @param {*} mucThue là mảng các mức thuế
- * @param {*} buocThue là mảng các bước tiền thuế
- * @returns 
- */
-function tinhTienThue(thuNhapThue, mucThue, buocThue) {
-
-    if (thuNhapThue <= 0) {
-        return 0;
-    } else if (thuNhapThue <= buocThue[0]) {
-        return thuNhapThue * mucThue[0];
-    } else if (thuNhapThue > buocThue[0] && thuNhapThue <= buocThue[1]) {
-        return buocThue[0] * mucThue[0] + (thuNhapThue - buocThue[0]) * mucThue[1];
-    } else if (thuNhapThue > buocThue[1] && thuNhapThue <= buocThue[2]) {
-        return buocThue[0] * mucThue[0] + (buocThue[1] - buocThue[0]) * mucThue[1] + (thuNhapThue - buocThue[1]) * mucThue[2];
-    } else if (thuNhapThue > buocThue[2] && thuNhapThue <= buocThue[3]) {
-        return buocThue[0] * mucThue[0] + (buocThue[1] - buocThue[0]) * mucThue[1] + (buocThue[2] - buocThue[1]) * mucThue[2] + (thuNhapThue - buocThue[2]) * mucThue[3];
-    } else if (thuNhapThue > buocThue[3] && thuNhapThue <= buocThue[4]) {
-        return buocThue[0] * mucThue[0] + (buocThue[1] - buocThue[0]) * mucThue[1] + (buocThue[2] - buocThue[1]) * mucThue[2] + (buocThue[3] - buocThue[2]) * mucThue[3] + (thuNhapThue - buocThue[3]) * mucThue[4];
-    } else if (thuNhapThue > buocThue[4] && thuNhapThue <= buocThue[5]) {
-        return buocThue[0] * mucThue[0] + (buocThue[1] - buocThue[0]) * mucThue[1] + (buocThue[2] - buocThue[1]) * mucThue[2] + (buocThue[3] - buocThue[2]) * mucThue[3] + (buocThue[4] - buocThue[3]) * mucThue[4] + (thuNhapThue - buocThue[4]) * mucThue[5];
-    } else if (thuNhapThue >= buocThue[5]) {
-        return buocThue[0] * mucThue[0] + (buocThue[1] - buocThue[0]) * mucThue[1] + (buocThue[2] - buocThue[1]) * mucThue[2] + (buocThue[3] - buocThue[2]) * mucThue[3] + (buocThue[4] - buocThue[3]) * mucThue[4] + (buocThue[5] - buocThue[4]) * mucThue[5] + (thuNhapThue - buocThue[5]) * mucThue[6];
-    }
-}
+//bước thu nhâp chịu thuế
+const buocThuNhap = [0,60000000,120000000,210000000,384000000,624000000,960000000];
+//bước mức thuế;
+const buocThue = [0.05,0.1,0.15,0.2,0.25,0.3,0.35];
 
 /**
  * Tính và hiển thị kết qua ra màn hình qu xự kiện click của button id ='tinh-thue'
  */
 document.getElementById('tinh-thue').onclick = function () {
-    tienThue = tinhTienThue(layThuNhapChiuThue(thuNhap, phuThuoc), mucThue, buocThue);
+    // tienThue = tinhTienThue( mucThue, buocThue);
+    tienThue = tinhTienTheoKhungGia(layThuNhapChiuThue(thuNhap, phuThuoc),buocThuNhap,buocThue);
     document.getElementById('thue-output').innerHTML = VND.format(tienThue);
 }
 
@@ -324,6 +312,7 @@ var phiXuLy = 0;
 var phiDichVu = 0;
 var phiThueKenh = 0;
 
+//lấy dử liệu người dùng nhập vào
 document.getElementById('ma-khach-hang').addEventListener('change', function () {
     hoTen2 = this.value;
     document.getElementById('ma-khach-hang-output').innerHTML = hoTen2;
@@ -337,7 +326,7 @@ document.getElementById('so-kenh-cao-cap').addEventListener('change', function (
     document.getElementById('so-kenh-cao-cap-output').innerHTML = soKenhCC;
 });
 
-
+//thêm sự kiên cho các radio loại khách hàng để lấy về kết quả nhập vào cho loại khách hàng
 addListenerRadioByName('loai-khach-hang', 'change', function () {
     loaiKH = getValueByName('loai-khach-hang');
     if (loaiKH === 'doanh-nghiep') {
@@ -353,10 +342,16 @@ addListenerRadioByName('loai-khach-hang', 'change', function () {
     document.getElementById('so-ket-noi-output').innerHTML = soKN;
 })
 
+
+/**
+ * tính tổng các loại phí thảo công thức tongPhi = phiXuLy + phiDichVu + phiThueKenh
+ * @returns trả về tongPhi
+ */
 function getTongPhi() {
     return phiXuLy + phiDichVu + phiThueKenh;
 }
 
+//Hiển thị các giá trị output ra màn hình
 function displayTienCuoc() {
     document.getElementById('phi-xu-ly').innerHTML = phiXuLy;
     document.getElementById('phi-dich-vu').innerHTML = phiDichVu;
@@ -364,6 +359,7 @@ function displayTienCuoc() {
     document.getElementById('tong-phi').innerHTML = tienCuoc;
 
 }
+//thêm sự kiên sử lý và in các giá trị tiền cước ra màn hình
 document.getElementById('xu-ly-hoa-don').onclick = function () {
     if (loaiKH == 'ca-nhan') {
         phiXuLy = 4.5;
